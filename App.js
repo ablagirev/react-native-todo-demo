@@ -6,10 +6,7 @@ import { TodoScreen } from "./src/screens/TodoScreen";
 
 export default function App() {
   const [todoId, setTodoId] = useState(null);
-  const [todos, setTodos] = useState([
-    { id: "8a9sjdahd", title: "some title" },
-    { id: "9ajsdasd", title: "another title" },
-  ]);
+  const [todos, setTodos] = useState([]);
   const addTodo = (title) => {
     setTodos((prev) => [
       ...prev,
@@ -43,6 +40,17 @@ export default function App() {
     );
   };
 
+  const updateTodo = (id, title) => {
+    setTodos((old) =>
+      old.map((todo) => {
+        if (todo.id === id) {
+          todo.title = title;
+        }
+        return todo;
+      })
+    );
+  };
+
   let content = (
     <MainScreen
       todos={todos}
@@ -59,6 +67,7 @@ export default function App() {
         goBack={() => setTodoId(null)}
         todo={selectedTodo}
         onRemove={removeTodo}
+        onSave={updateTodo}
       />
     );
   }
