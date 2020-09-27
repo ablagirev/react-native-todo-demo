@@ -1,22 +1,52 @@
-import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { AddTodo } from "../components/AddTodo";
-import { Todo } from "../components/ToDo";
+import React from 'react'
+import {
+	FlatList, Image, StyleSheet, View
+} from 'react-native'
+import { AddTodo } from '../components/AddTodo'
+import { Todo } from '../components/ToDo'
 
-export const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
-  console.log(addTodo);
-  return (
-    <View>
-      <AddTodo onSubmit={addTodo} />
-      <FlatList
-        keyExtractor={(item) => item.id}
-        data={todos}
-        renderItem={({ item }) => (
-          <Todo todo={item} onRemove={removeTodo} onOpen={openTodo} />
-        )}
-      />
-    </View>
-  );
-};
+export const MainScreen = ({
+	addTodo, todos, removeTodo, openTodo,
+}) => {
+	let content = (
+		<FlatList
+			keyExtractor={(item) => item.id}
+			data={todos}
+			renderItem={({ item }) => (
+				<Todo todo={item} onRemove={removeTodo} onOpen={openTodo} />
+			)}
+		/>
+	)
 
-const styles = StyleSheet.create({});
+	if (todos.length === 0) {
+		content = (
+			<View style={styles.imgWrap}>
+				<Image
+					source={require('../../assets/no-items.png')}
+					style={styles.image}
+				/>
+			</View>
+		)
+	}
+
+	return (
+		<View>
+			<AddTodo onSubmit={addTodo} />
+			{content}
+		</View>
+	)
+}
+
+const styles = StyleSheet.create({
+	imgWrap: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 10,
+		height: 300,
+	},
+	image: {
+		width: '100%',
+		height: '100%',
+		resizeMode: 'contain',
+	},
+})
